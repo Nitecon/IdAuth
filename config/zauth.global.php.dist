@@ -1,0 +1,10 @@
+<?php
+
+return array(
+    'iap' => array(
+        'storage' => 'Iap\Session',
+        'tryProviders' => array(
+            'Iap\Provider\DbTable',
+        ),
+    ),
+);

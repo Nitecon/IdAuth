@@ -1,0 +1,48 @@
+<?php
+/* @var $collector \Iap\Collector\ZAuthCollector */
+$userEntity = $this->collector->getCollectedUser();
+$hasIdentity = $userEntity['user']['hasIdentity'];
+?>
+<div class="zdt-toolbar-entry">
+    <div class="zdt-toolbar-preview">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAB3RJTUUH3QoMATgxJZHUvgAAAAlwSFlzAAAewgAAHsIBbtB1PgAAAARnQU1BAACxjwv8YQUAAANzSURBVHjavZRbaBRXGMf/cz27s7uZ7MTdTbKRLF6J9ULSBDSIohWqJKUoFa1SoQ8q6YsSkOKD4oOPxpc+1AvElCoIQbyQKg20pWCLoAkxNt6lWjTZlATjutndufecSWZNJME89YP/cM6c7/vN953zzQHmZqFJfdC4WVdqm1uRrNlAXWpBlCQcW4fjpGHkevFyoAv3utvnBBQb91Vw2ryzfEVVE3gempNF37HN+PvfMaz/rgeQCGAZcNJDHU568IDd80NmVmC45VQDOK6Tk8RqNlfsHAaObkG0RKFsDn8O/IPN7XcBXvD8XcPqp5lvz57+5rHPEPxByc6TcZJQu8WAnBIlAUyH1iSxqWEpbNOC7QCp+ZXovf8UL03RWxcDUkKQpUYuXNdhPvvNZhzeB5K4dkYOkpQckOFrUTJG06Bl8BLNUPLcF5ZrmOpDQoGPlUVVJ32OByzbe74lXFnyOQlKmKquB4OUFqEwEYLAgEHcHMzgfb9wUt2vff1jcxEYXVL6iRyUp32Z6Y+sgCPXfsdYwUH6rYHd537CCCmBTKTpWYaJGK2JbvQOlT0CEVLP8+6703FZnRxc28KToWHcevQQecOCpWchSyo4US76FLuDcPUTwLYxNRDqS3Jwp8Ei2VFc3LoCsYQGGIbXENsaazA8PIovL/+FbLhsGtR0xCqvZDWuWhIcUYQDT5wLkhvDz3tWI6apMHMFWJZDZXvjhFbqrZHcG8/Xj5N5x8uIf/MVN87rxguhkIevb1fEaEsEYJo2O2K4k2Jj9k4KBnBoeRmmxkh6/lXxUCTDuCPk6QJV+dsRbKldDNswaTU8LfQ90Xe2bqKpbjHimRH4cZJp3SkCS9XYL4LOvpRDy7qV3l/hegW4E3KdCU3O2Rrz2b92mRcjmoYV1cp/LQKv7F7zvRBUrkp6AWtrKuh+mTTIoXIn5KP8ucv21ML65VWIOCZ4JXT68o76rmLbMNMVsk9JF1aduHo7tTJVicoyFUFZRLw0ghDtNWbjBQOjmXHaQibSrzN4NjSKQi7fk/ko0Trj5fDp4bYGznU7Bd2onsvdZxO5n/bH9u7jBx/PCGS2q/N6hfkqfVZ/8ryJ3n8zgjiZ/iEL53eQBdUHzjdvnP36mmoXLt1o7b33YAPds9psLp8QecHmBT4dVoK99auWdX3x2aZ2/B/2HxKVY89NOixsAAAAAElFTkSuQmCC" alt="Iap Icon">
+        <span class="zdt-toolbar-info <?php echo ($hasIdentity) ? 'zdt-toolbar-color-green' : 'zdt-toolbar-color-red'; ?>">
+            <?php echo $userEntity['user']['firstName'] . ' ' . $userEntity['user']['lastName']; ?>
+        </span>
+    </div>
+    <div class="zdt-toolbar-detail">
+        <span class="zdt-toolbar-info zdt-toolbar-info-heading">
+            <span class="zdt-detail-label">Provider Information</span>
+        </span>
+        <span class="zdt-toolbar-info">
+            <span class="zdt-detail-label">Current Provider</span>
+            <span class="zdt-detail-value"><?php echo $userEntity['user']['currentProvider']; ?></span>
+        </span>
+        <span class="zdt-toolbar-info zdt-toolbar-info-heading">
+            <span class="zdt-detail-label">ZAuth User Details</span>
+        </span>
+        <span class="zdt-toolbar-info">
+            <div class="zdt-toolbar-detail-inner">
+                <?php if ($userEntity['user']['extended']): ?>
+                    <span class="zdt-toolbar-info">
+                        <span class="zdt-detail-label">First Name</span>
+                        <span class="zdt-detail-value"><?php echo $userEntity['user']['firstName']; ?></span>
+                    </span>
+                    <span class="zdt-toolbar-info">
+                        <span class="zdt-detail-label">Last Name</span>
+                        <span class="zdt-detail-value"><?php echo $userEntity['user']['lastName']; ?></span>
+                    </span>
+                    <span class="zdt-toolbar-info">
+                        <span class="zdt-detail-label">Email</span>
+                        <span class="zdt-detail-value"><?php echo $userEntity['user']['email']; ?></span>
+                    </span>
+                <?php else: ?>
+                    <span class="zdt-detail-label">IPS does not provide extended information</span>
+                    <span class="zdt-toolbar-info">
+                        <span class="zdt-detail-label">Identity</span>
+                        <span class="zdt-detail-value"><?php echo $userEntity['user']['identity']; ?></span>
+                    </span>
+                <?php endif; ?>
+            </div>
+    </div>
+</div>
