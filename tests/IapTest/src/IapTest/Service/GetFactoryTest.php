@@ -11,11 +11,11 @@
  *
  */
 
-namespace IapTest\ServiceFactory;
+namespace IapTest\Service;
 
 use Zend\Mvc\Application;
 
-class LdapAdapterFactoryTest extends \PHPUnit_Framework_TestCase
+class GetFactoryTestTest extends \PHPUnit_Framework_TestCase
 {
 
     protected $service_locator;
