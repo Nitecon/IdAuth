@@ -35,7 +35,7 @@ class GetFactoryTestTest extends \PHPUnit_Framework_TestCase
     public function testCanGetConfigFromFactory()
     {
         $config = $this->application->getServiceManager()->get("Iap\Config");
-        $this->assertEquals(true, isset($config['iap']));
+        $this->assertEquals(true, isset($config['storage']));
     }
 
     /**

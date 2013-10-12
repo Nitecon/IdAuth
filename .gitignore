@@ -1,6 +1,6 @@
 /nbproject
 /tests/data/logs/*
-/tests/config/autoload/zfcuserldap.global.php
+/tests/config/autoload/*
 composer.lock
 composer.phar
 /vendor
