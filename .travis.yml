@@ -8,9 +8,9 @@ php:
 before_install:
  - curl -s https://getcomposer.org/installer | php
  - php composer.phar install --prefer-source --dev
+ - mkdir -p tests/config/autoload
+ - mkdir -p data/logs
  - cp config/zauth.global.php.dist tests/config/autoload/zauth.global.php
- - mkdir data
- - mkdir data/logs
 
 script:
  - phpunit --configuration ./tests/phpunit.xml --coverage-clover ./build/logs/clover.xml
