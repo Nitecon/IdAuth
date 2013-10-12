@@ -9,7 +9,7 @@
          backupGlobals="false"
          syntaxCheck="true"
 >
-    <testsuite name="ZfcUserLdap Test Suite">
+    <testsuite name="Iap Test Suite">
         <directory>./IapTest</directory>
     </testsuite>
     <logging>
