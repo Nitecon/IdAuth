@@ -5,7 +5,8 @@ PSR-2 Certified with build pass
 
 WIP
 ===
-The module now functional but needs a lot of work and unit tests
+The module now functional but needs a lot of work and unit tests.  Please note the 100% coverage indicator
+is currently not accurate as it only has one test file with 100% coverage :)
 
 Iap
 =====
