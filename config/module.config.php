@@ -1,18 +1,30 @@
 <?php
 
 return array(
+    'iap' => array(
+        'providerOptions' => array(
+            'DbTable' => array(
+            ),
+            'Doctrine' => array(
+            ),
+        ),
+    ),
     'doctrine' => array(
         'driver' => array(
             'iap_entities' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
                 'paths' => array(__DIR__ . '/../src/Iap/Provider/Doctrine/Entity')
             ),
             'orm_default' => array(
                 'drivers' => array(
-                    'Iap\Entity' => 'iap_entities'
+                    'Iap\Provider\Doctrine\Entity' => 'iap_entities'
                 )
             )
         )
+    ),
+    'data-fixture' => array(
+        'Iap_fixture' => __DIR__ . '/../src/Iap/Fixture',
     ),
     'invokables' => array(
         'Iap\Collector\IapCollector' => 'Iap\Collector\IapCollector',
@@ -30,6 +42,7 @@ return array(
             'Iap\Config' => 'Iap\Service\Factory\Config',
             'Iap\Collector' => 'Iap\Service\Factory\Collector',
             'Iap\Provider\DbTable' => 'Iap\Service\Factory\Providers\DbTable',
+            'Iap\Provider\Doctrine' => 'Iap\Service\Factory\Providers\Doctrine',
             'Iap\Storage' => 'Iap\Service\Factory\Storage',
             'Iap\Session' => 'Iap\Service\Factory\Storage\Session',
             'IapService' => 'Iap\Service\Factory\IapService',
@@ -86,12 +99,6 @@ return array(
                         'may_terminate' => true,
                     ),
                 ),
-            ),
-        ),
-    ),
-    'Iap' => array(
-        'providerOptions' => array(
-            'DbTable' => array(
             ),
         ),
     ),

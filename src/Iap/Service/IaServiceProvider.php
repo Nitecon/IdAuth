@@ -5,10 +5,10 @@
  *
  * For the full copyright and license information, please view
  * the file LICENSE.txt that was distributed with this source code.
- * 
+ *
  * @author Will Hattingh <w.hattingh@nitecon.com>
  *
- * 
+ *
  */
 
 namespace Iap\Service;
@@ -33,7 +33,7 @@ class IAServiceProvider
 
     /**
      *  This is the identity to be returned and should implement Iap\Provider\Interfaces\IdentityInterface
-     * @var DbIdentity 
+     * @var DbIdentity
      */
     protected $identity;
 
@@ -83,9 +83,11 @@ class IAServiceProvider
 
     public function authenticate(array $credentials)
     {
+        $messages = array();
         foreach ($this->availProviders as $providerName) {
             $provider = $this->serviceManager->get($providerName);
             $result = $provider->authenticate($credentials);
+            $messages = array_values($result->getMessages());
             if ($result->getIsAuthenticated()) {
                 $storage = $this->storage->read();
                 $identity = $result->getIdentity();
@@ -105,6 +107,10 @@ class IAServiceProvider
                 break;
             }
         }
+        $this->setIdentity(null);
+        $this->setName(null);
+        $this->setMessages($messages);
+        $this->hasIdentity = false;
         return $this;
     }
 

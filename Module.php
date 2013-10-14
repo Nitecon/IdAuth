@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -14,9 +15,10 @@ use Zend\Mvc\MvcEvent;
 
 class Module
 {
+
     public function onBootstrap(MvcEvent $e)
     {
-        $eventManager        = $e->getApplication()->getEventManager();
+        $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
         /** @var \Zend\EventManager\SharedEventManager $sharedEvents */
@@ -37,9 +39,20 @@ class Module
             ),
         );
     }
-    public function processUnAuth(MvcEvent $e){
+
+    public function getViewHelperConfig()
+    {
+        return array(
+            'invokables' => array(
+                'iapIdentity' => 'Iap\View\Helper\IapIdentity',
+            ),
+        );
+    }
+
+    public function processUnAuth(MvcEvent $e)
+    {
         //$d = new \Zend\Debug\Debug(); $d->dump($e->getError());
-        if ($e->getError() === 'error-route-unauthorized'){
+        if ($e->getError() === 'error-route-unauthorized') {
             echo "Not Authorized";
             $e->stopPropagation();
         }

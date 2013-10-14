@@ -5,89 +5,134 @@
  *
  * For the full copyright and license information, please view
  * the file LICENSE.txt that was distributed with this source code.
- * 
+ *
  * @author Will Hattingh <w.hattingh@nitecon.com>
  *
- * 
+ *
  */
 
 namespace Iap\Provider\Doctrine;
 
 use Iap\Provider\ProviderResult;
 use Iap\Provider\Interfaces\ProviderInterface;
-use Zend\Authentication\AuthenticationService;
+use Iap\Provider\Interfaces\IdentityInterface;
+use Zend\Crypt\Password\Bcrypt;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Doctrine\ORM\EntityManager;
 
 class DoctrineProvider implements ProviderInterface
 {
 
+    /**
+     *
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     *
+     * @var ServiceLocatorInterface
+     */
     protected $serviceManager;
 
-    public function __construct(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
+    /**
+     *
+     * @var string
+     */
+    protected $entityName;
+
+    /**
+     *
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator
+     */
+    public function __construct(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceManager = $serviceLocator;
+        $config = $serviceLocator->get('Iap\Config');
+        $this->entityName = $config['entity_class'];
     }
 
     public function authenticate(array $credentials)
     {
+        $result = new ProviderResult();
         $username = $credentials['username'];
         $password = $credentials['password'];
-        $dbAdapter = $this->serviceManager->get('Zend\Db\Adapter\Adapter');
-        $dbTableAuthAdapter = new DbTableAuthAdapter($dbAdapter, 'users', 'username', 'password', 'MD5(?)');
-        $dbTableAuthAdapter->setIdentity($username);
-        $dbTableAuthAdapter->setCredential($password);
-
-        $authService = new AuthenticationService();
-        $authService->setAdapter($dbTableAuthAdapter);
-        //$authService->setStorage($this->getServiceManager()->get('Iap\Storage'));
-
-        $authResult = $authService->authenticate();
-        $result = new ProviderResult();
-        $result->setAuthCode($authResult->getCode());
-        $result->setMessages($authResult->getMessages());
-        $result->setIsAuthenticated($authResult->isValid());
-        $result->setName('Iap\Providers\DbTable');
-        $config = $this->serviceManager->get('Config');
-        $options = $config['iap']['providerOptions']['DbTable'];
-        $result->setOptions($options);
-
-        if ($authResult->isValid()) {
-            $result->setIdentity($this->queryIdentity($username));
+        $repo = $this->getEntityManager()->getRepository($this->entityName);
+        $userObject = $repo->findOneBy(array('username' => $username));
+        if (!$userObject) {
+            $result->setAuthCode(\Zend\Authentication\Result::FAILURE_IDENTITY_NOT_FOUND);
+            $result->setMessages(array('A record with the supplied identity could not be found.'));
+            $result->setIsAuthenticated(false);
+            return $result;
         }
+        $bcrypt = new Bcrypt();
+        $bcrypt->setCost(14);
+        if (!$bcrypt->verify($password, $userObject->getPassword())) {
+            // Password does not match
+            $result->setAuthCode(\Zend\Authentication\Result::FAILURE_CREDENTIAL_INVALID);
+            $result->setMessages(array('Supplied credential is invalid.'));
+            $result->setIsAuthenticated(false);
+            return $result;
+        }
+
+        $result->setAuthCode(\Zend\Authentication\Result::SUCCESS);
+        $result->setMessages(array('Authentication Successful!'));
+        $result->setIsAuthenticated(true);
+        $result->setName('Iap\Providers\Doctrine');
+        $config = $this->serviceManager->get('Iap\Config');
+        $options = $config['providerOptions']['Doctrine'];
+        $result->setOptions($options);
+        $result->setIdentity($userObject);
         return $result;
     }
 
-    public function queryIdentity($username)
-    {
-        $adapter = $this->serviceManager->get('Zend\Db\Adapter\Adapter');
-        $qi = function ($name) use ($adapter) {
-                    return $adapter->platform->quoteIdentifier($name);
-        };
-        $fp = function ($name) use ($adapter) {
-                    return $adapter->driver->formatParameterName($name);
-        };
-        /* @var $statement Zend\Db\Adapter\DriverStatementInterface */
-        $statement = $adapter->query('SELECT * FROM ' . $qi('users') . ' WHERE username = ' . $fp('username'));
-
-        /* @var $results Zend\Db\ResultSet\ResultSet */
-        $results = $statement->execute(array('username' => $username));
-
-        $user = $results->current();
-        $identity = new DbIdentity();
-        $identity->setFirstName($user['firstName']);
-        $identity->setLastName($user['lastName']);
-        $identity->setUsername($username);
-        $identity->setEmail($user['email']);
-        // Not setting roles right now
-        return $identity;
-    }
-
-    public function updateIdentity(\Iap\Provider\Interfaces\IdentityInterface $identity)
+    public function updateIdentity(IdentityInterface $identity)
     {
         return $identity;
     }
 
     public function resetPassword(array $credentials)
     {
-        return false;
+        $username = $credentials['username'];
+        $password = $credentials['password'];
+        $em = $this->getEntityManager()->getRepository($this);
+        $bcrypt = new Bcrypt();
+        $bcrypt->setCost(14);
+        $hash = explode('$', $userObject->getPassword());
+        if ($hash[2] === $bcrypt->getCost()) {
+            return;
+        }
+
+        $userObject->setPassword($bcrypt->create($password));
+    }
+
+    /**
+     * Sets the EntityManager
+     *
+     * @param EntityManager $em
+     * @access protected
+     * @return PostController
+     */
+    protected function setEntityManager(EntityManager $em)
+    {
+        $this->entityManager = $em;
+        return $this;
+    }
+
+    /**
+     * Returns the EntityManager
+     *
+     * Fetches the EntityManager from ServiceLocator if it has not been initiated
+     * and then returns it
+     *
+     * @access protected
+     * @return EntityManager
+     */
+    protected function getEntityManager()
+    {
+        if (null === $this->entityManager) {
+            $this->setEntityManager($this->serviceManager->get('Doctrine\ORM\EntityManager'));
+        }
+        return $this->entityManager;
     }
 }

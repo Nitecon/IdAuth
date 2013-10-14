@@ -2,9 +2,10 @@
 
 return array(
     'iap' => array(
+        'entity_class'=>'Iap\Provider\Doctrine\Entity\User',
         'storage' => 'Iap\Session',
         'tryProviders' => array(
-            'Iap\Provider\DbTable',
+            'Iap\Provider\Doctrine',
         ),
         'redirectionStrategy'=>array(
             'useDifferentLayoutForAuth'=>true,
