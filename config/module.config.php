@@ -1,19 +1,19 @@
 <?php
 
 return array(
-    /* 'doctrine' => array(
-      'driver' => array(
-      'iap_entities' => array(
-      'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-      'paths' => array(__DIR__ . '/../src/Iap/Entity')
-      ),
-      'orm_default' => array(
-      'drivers' => array(
-      'Iap\Entity' => 'iap_entities'
-      )
-      )
-      )
-      ), */
+    'doctrine' => array(
+        'driver' => array(
+            'iap_entities' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'paths' => array(__DIR__ . '/../src/Iap/Provider/Doctrine/Entity')
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    'Iap\Entity' => 'iap_entities'
+                )
+            )
+        )
+    ),
     'invokables' => array(
         'Iap\Collector\IapCollector' => 'Iap\Collector\IapCollector',
     ),
@@ -23,8 +23,8 @@ return array(
         ),
     ),
     'service_manager' => array(
-        'invokables'=>array(
-            'Iap\Service\IaServiceProvider'=>'Iap\Service\IaServiceProvider',
+        'invokables' => array(
+            'Iap\Service\IaServiceProvider' => 'Iap\Service\IaServiceProvider',
         ),
         'factories' => array(
             'Iap\Config' => 'Iap\Service\Factory\Config',
@@ -59,6 +59,7 @@ return array(
                                 'action' => 'authenticate',
                             ),
                         ),
+                        'may_terminate' => true,
                     ),
                     'login' => array(
                         'type' => 'Literal',
@@ -70,6 +71,7 @@ return array(
                                 'action' => 'login',
                             ),
                         ),
+                        'may_terminate' => true,
                     ),
                     'logout' => array(
                         'type' => 'Literal',
@@ -81,6 +83,7 @@ return array(
                                 'action' => 'logout',
                             ),
                         ),
+                        'may_terminate' => true,
                     ),
                 ),
             ),
