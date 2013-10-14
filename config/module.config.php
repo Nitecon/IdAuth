@@ -23,6 +23,9 @@ return array(
         ),
     ),
     'service_manager' => array(
+        'invokables'=>array(
+            'Iap\Service\IaServiceProvider'=>'Iap\Service\IaServiceProvider',
+        ),
         'factories' => array(
             'Iap\Config' => 'Iap\Service\Factory\Config',
             'Iap\Collector' => 'Iap\Service\Factory\Collector',
