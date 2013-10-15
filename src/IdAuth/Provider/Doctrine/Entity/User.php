@@ -35,7 +35,6 @@ class User implements IdentityInterface
     protected $password;
 
     /**
-     * @ORM\Column(type="object")
      * @ORM\OneToMany(targetEntity="IdAuth\Provider\Doctrine\Entity\Roles", mappedBy="parent")
      */
     protected $roles;
