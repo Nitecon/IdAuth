@@ -1,9 +1,9 @@
 {
-    "name": "nitecon/iap",
+    "name": "nitecon/idauth",
     "description": "Zend Framework 2 Content Management System Auth Module, can be run independent of zcms",
     "type": "library",
     "keywords": ["zf2", "auth", "authentication", "identity", "identity provider"],
-    "homepage": "https://github.com/Nitecon/Iap",
+    "homepage": "https://github.com/Nitecon/IdAuth",
     "license": "New BSD License",
     "authors": [
         {
@@ -16,8 +16,8 @@
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*",
-        "doctrine/doctrine-orm-module":"0.7.*",
-        "hounddog/doctrine-data-fixture-module":"0.0.*"
+        "doctrine/doctrine-orm-module": "0.7.*",
+        "hounddog/doctrine-data-fixture-module": "0.0.*"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "1.4.*",
