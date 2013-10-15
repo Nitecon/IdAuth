@@ -18,7 +18,7 @@ use Zend\Authentication\AuthenticationService;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class IdAuthIdentity extends AbstractHelper implements ServiceLocatorAwareInterface
+class IdAuth extends AbstractHelper implements ServiceLocatorAwareInterface
 {
 
     /**
