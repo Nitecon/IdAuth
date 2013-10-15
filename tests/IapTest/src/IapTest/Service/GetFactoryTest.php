@@ -11,7 +11,7 @@
  *
  */
 
-namespace IapTest\Service;
+namespace IdAuthTest\Service;
 
 use Zend\Mvc\Application;
 
@@ -34,7 +34,7 @@ class GetFactoryTestTest extends \PHPUnit_Framework_TestCase
 
     public function testCanGetConfigFromFactory()
     {
-        $config = $this->application->getServiceManager()->get("Iap\Config");
+        $config = $this->application->getServiceManager()->get("IdAuth\Config");
         $this->assertEquals(true, isset($config['storage']));
     }
 

@@ -8,7 +8,7 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace Iap;
+namespace IdAuth;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
@@ -44,7 +44,7 @@ class Module
     {
         return array(
             'invokables' => array(
-                'iapIdentity' => 'Iap\View\Helper\IapIdentity',
+                'idAuth' => 'IdAuth\View\Helper\IdAuth',
             ),
         );
     }

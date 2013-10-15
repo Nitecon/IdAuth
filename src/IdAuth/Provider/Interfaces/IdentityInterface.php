@@ -10,9 +10,19 @@
  *
  * 
  */
-// Composer autoloading
-if (file_exists('./vendor/autoload.php')) {
-    $loader = include './vendor/autoload.php';
+
+namespace IdAuth\Provider\Interfaces;
+
+interface IdentityInterface
+{
+
+    public function getUsername();
+
+    public function getFirstName();
+
+    public function getLastName();
+
+    public function getEmail();
+
+    public function getRoles();
 }
-$loader->add('IdAuthTest', "./tests/IdAuthTest/src/IdAuthTest");
-Zend\Mvc\Application::init(require __DIR__ . '/config/application.config.php');

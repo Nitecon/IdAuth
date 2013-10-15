@@ -2,7 +2,7 @@
 
 return array(
     'modules' => array(
-        'Iap',
+        'IdAuth',
     ),
     'module_listener_options' => array(
         // This should be an array of paths in which modules reside.

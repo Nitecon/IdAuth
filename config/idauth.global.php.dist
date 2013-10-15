@@ -1,0 +1,20 @@
+<?php
+
+return array(
+    'idAuth' => array(
+        'entity_class'=>'IdAuth\Provider\Doctrine\Entity\User',
+        'storage' => 'IdAuth\Session',
+        'tryProviders' => array(
+            'IdAuth\Provider\Doctrine',
+        ),
+        'redirectionStrategy'=>array(
+            'useDifferentLayoutForAuth'=>true,
+            'authLayout'=>'idAuth/layout',
+            'useDifferentLayoutForUnAuth'=>true,
+            'unauthLayout'=>'idAuth/layout',
+            'noIdentityRedirUnauth'=>'idAuth/login',
+            'hasIdentityRedirUnauth'=>'idAuth/login',
+            'usePrevPageRedir'=>true,
+        )
+    ),
+);

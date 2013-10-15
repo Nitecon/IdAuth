@@ -1,10 +1,10 @@
 <?php
 
 return array(
-    'iap' => array(
-        'storage' => 'Iap\Session',
+    'idAuth' => array(
+        'storage' => 'IdAuth\Session',
         'tryProviders' => array(
-            'Iap\Provider\DbTable',
+            'IdAuth\Provider\DbTable',
         ),
     ),
 );

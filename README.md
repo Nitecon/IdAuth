@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Nitecon/Iap.png?branch=master)](https://travis-ci.org/Nitecon/Iap) [![Latest Stable Version](https://poser.pugx.org/nitecon/Iap/v/stable.png)](https://packagist.org/packages/nitecon/Iap) [![Coverage Status](https://coveralls.io/repos/Nitecon/Iap/badge.png?branch=master)](https://coveralls.io/r/Nitecon/Iap?branch=master)
+[![Build Status](https://travis-ci.org/Nitecon/IdAuth.png?branch=master)](https://travis-ci.org/Nitecon/IdAuth) [![Latest Stable Version](https://poser.pugx.org/nitecon/IdAuth/v/stable.png)](https://packagist.org/packages/nitecon/IdAuth) [![Coverage Status](https://coveralls.io/repos/Nitecon/IdAuth/badge.png?branch=master)](https://coveralls.io/r/Nitecon/IdAuth?branch=master)
 
 PSR-2 Certified with build pass
 ===============================
@@ -8,9 +8,9 @@ WIP
 The module now functional but needs a lot of work and unit tests.  Please note the 100% coverage indicator
 is currently not accurate as it only has one test file with 100% coverage :)
 
-Iap
+IdAuth
 =====
-Iap is designed to be a multi provider identity and authentication system.  Where as most modules
+IdAuth is designed to be a multi provider identity and authentication system.  Where as most modules
 that are currently available only allow single authentication systems the aim is to provide, access
 to many different authentication systems including Facebook / Github etc as additional providers.
 

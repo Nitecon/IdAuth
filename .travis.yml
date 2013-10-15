@@ -9,7 +9,7 @@ before_install:
  - php composer.phar install --prefer-source --dev
  - mkdir -p tests/config/autoload
  - mkdir -p data/logs
- - cp config/zauth.global.php.dist tests/config/autoload/zauth.global.php
+ - cp config/idauth.global.php.dist tests/config/autoload/idauth.global.php
 
 script:
  - phpunit --configuration ./tests/phpunit.xml --coverage-clover ./build/logs/clover.xml

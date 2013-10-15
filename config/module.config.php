@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'iap' => array(
+    'idAuth' => array(
         'providerOptions' => array(
             'DbTable' => array(
             ),
@@ -11,51 +11,51 @@ return array(
     ),
     'doctrine' => array(
         'driver' => array(
-            'iap_entities' => array(
+            'idAuth_entities' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(__DIR__ . '/../src/Iap/Provider/Doctrine/Entity')
+                'paths' => array(__DIR__ . '/../src/IdAuth/Provider/Doctrine/Entity')
             ),
             'orm_default' => array(
                 'drivers' => array(
-                    'Iap\Provider\Doctrine\Entity' => 'iap_entities'
+                    'IdAuth\Provider\Doctrine\Entity' => 'idAuth_entities'
                 )
             )
         )
     ),
     'data-fixture' => array(
-        'Iap_fixture' => __DIR__ . '/../src/Iap/Fixture',
+        'IdAuth_fixture' => __DIR__ . '/../src/IdAuth/Fixture',
     ),
     'invokables' => array(
-        'Iap\Collector\IapCollector' => 'Iap\Collector\IapCollector',
+        'IdAuth\Collector\IdAuthCollector' => 'IdAuth\Collector\IdAuthCollector',
     ),
     'controllers' => array(
         'invokables' => array(
-            'Iap\Controller\User' => 'Iap\Controller\UserController',
+            'IdAuth\Controller\User' => 'IdAuth\Controller\UserController',
         ),
     ),
     'service_manager' => array(
         'invokables' => array(
-            'Iap\Service\IaServiceProvider' => 'Iap\Service\IaServiceProvider',
+            'IdAuth\Service\IaServiceProvider' => 'IdAuth\Service\IaServiceProvider',
         ),
         'factories' => array(
-            'Iap\Config' => 'Iap\Service\Factory\Config',
-            'Iap\Collector' => 'Iap\Service\Factory\Collector',
-            'Iap\Provider\DbTable' => 'Iap\Service\Factory\Providers\DbTable',
-            'Iap\Provider\Doctrine' => 'Iap\Service\Factory\Providers\Doctrine',
-            'Iap\Storage' => 'Iap\Service\Factory\Storage',
-            'Iap\Session' => 'Iap\Service\Factory\Storage\Session',
-            'IapService' => 'Iap\Service\Factory\IapService',
+            'IdAuth\Config' => 'IdAuth\Service\Factory\Config',
+            'IdAuth\Collector' => 'IdAuth\Service\Factory\Collector',
+            'IdAuth\Provider\DbTable' => 'IdAuth\Service\Factory\Providers\DbTable',
+            'IdAuth\Provider\Doctrine' => 'IdAuth\Service\Factory\Providers\Doctrine',
+            'IdAuth\Storage' => 'IdAuth\Service\Factory\Storage',
+            'IdAuth\Session' => 'IdAuth\Service\Factory\Storage\Session',
+            'IdAuthService' => 'IdAuth\Service\Factory\IdAuthService',
         ),
     ),
     'router' => array(
         'routes' => array(
-            'iap' => array(
+            'idAuth' => array(
                 'type' => 'Literal',
                 'options' => array(
                     'route' => '/user',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Iap\Controller',
+                        '__NAMESPACE__' => 'IdAuth\Controller',
                         'controller' => 'User',
                         'action' => 'index',
                     ),
@@ -67,7 +67,7 @@ return array(
                         'options' => array(
                             'route' => '/authenticate',
                             'defaults' => array(
-                                '__NAMESPACE__' => 'Iap\Controller',
+                                '__NAMESPACE__' => 'IdAuth\Controller',
                                 'controller' => 'User',
                                 'action' => 'authenticate',
                             ),
@@ -79,7 +79,7 @@ return array(
                         'options' => array(
                             'route' => '/login',
                             'defaults' => array(
-                                '__NAMESPACE__' => 'Iap\Controller',
+                                '__NAMESPACE__' => 'IdAuth\Controller',
                                 'controller' => 'User',
                                 'action' => 'login',
                             ),
@@ -91,7 +91,7 @@ return array(
                         'options' => array(
                             'route' => '/logout',
                             'defaults' => array(
-                                '__NAMESPACE__' => 'Iap\Controller',
+                                '__NAMESPACE__' => 'IdAuth\Controller',
                                 'controller' => 'User',
                                 'action' => 'logout',
                             ),
@@ -109,7 +109,7 @@ return array(
         'not_found_template' => 'error/404',
         'exception_template' => 'error/index',
         'template_map' => array(
-            'zend-developer-tools/toolbar/iap' => __DIR__ . '/../view/zend-developer-tools/toolbar/iap.phtml',
+            'zend-developer-tools/toolbar/idAuth' => __DIR__ . '/../view/zend-developer-tools/toolbar/idAuth.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -118,12 +118,12 @@ return array(
     'zenddevelopertools' => array(
         'profiler' => array(
             'collectors' => array(
-                'iap' => 'IapCollector',
+                'idAuth' => 'IdAuthCollector',
             ),
         ),
         'toolbar' => array(
             'entries' => array(
-                'iap' => 'zend-developer-tools/toolbar/iap'
+                'idAuth' => 'zend-developer-tools/toolbar/idAuth'
             )
         )
     ),
