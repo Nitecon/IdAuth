@@ -6,7 +6,6 @@ php:
   - 5.5
 
 before_install:
- - curl -s https://getcomposer.org/installer | php
  - php composer.phar install --prefer-source --dev
  - mkdir -p tests/config/autoload
  - mkdir -p data/logs
