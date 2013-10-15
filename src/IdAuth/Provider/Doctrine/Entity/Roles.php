@@ -14,6 +14,7 @@
 namespace IdAuth\Provider\Doctrine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /** @ORM\Entity */
 class Roles
@@ -23,13 +24,21 @@ class Roles
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
-     * @ORM\ManyToOne(targetEntity="IdAuth\Provider\Doctrine\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     protected $id;
 
     /** @ORM\Column(type="string", length=255) */
     protected $role;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="IdAuth\Provider\Doctrine\Entity\User", inversedBy="roles")
+     */
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -41,6 +50,11 @@ class Roles
         return $this->role;
     }
 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
     public function setId($id)
     {
         $this->id = $id;
@@ -49,5 +63,10 @@ class Roles
     public function setRole($role)
     {
         $this->role = $role;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
     }
 }
