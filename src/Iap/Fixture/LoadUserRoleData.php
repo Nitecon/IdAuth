@@ -5,10 +5,10 @@
  *
  * For the full copyright and license information, please view
  * the file LICENSE.txt that was distributed with this source code.
- * 
+ *
  * @author Will Hattingh <w.hattingh@nitecon.com>
  *
- * 
+ *
  */
 
 namespace Iap\Fixture;
@@ -26,11 +26,11 @@ class LoadUserRoleData extends AbstractFixture
         $adminRole->setRole('Administrator');
         $anonRole = new Roles();
         $anonRole->setRole('Anonymous');
-        
+
         $manager->persist($adminRole);
         $manager->persist($anonRole);
         $manager->flush();
-        
+
         // store reference to admin role for User relation to Role
         $this->addReference('admin-role', $adminRole);
     }

@@ -29,9 +29,7 @@ class LoadUserData extends AbstractFixture implements DependentFixtureInterface
         $adminUser->setEmail('noone@nowhere.com');
         $adminUser->setFirstName('Admin');
         $adminUser->setLastName('User');
-        $adminUser->setRoles(
-                $this->getReference('admin-role') // load the stored reference
-        );
+        $adminUser->setRoles($this->getReference('admin-role'));
         $bcrypt = new Bcrypt();
         $bcrypt->setCost(14);
         $adminUser->setPassword($bcrypt->create('Tru5tme'));
@@ -47,4 +45,3 @@ class LoadUserData extends AbstractFixture implements DependentFixtureInterface
         return array('Iap\Fixture\LoadUserRoleData'); // fixture classes fixture is dependent on
     }
 }
-

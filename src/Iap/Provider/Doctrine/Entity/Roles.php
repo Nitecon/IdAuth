@@ -5,10 +5,10 @@
  *
  * For the full copyright and license information, please view
  * the file LICENSE.txt that was distributed with this source code.
- * 
+ *
  * @author Will Hattingh <w.hattingh@nitecon.com>
  *
- * 
+ *
  */
 
 namespace Iap\Provider\Doctrine\Entity;
@@ -40,6 +40,7 @@ class Roles
     {
         return $this->role;
     }
+
     public function setId($id)
     {
         $this->id = $id;
@@ -49,6 +50,4 @@ class Roles
     {
         $this->role = $role;
     }
-
-
 }
