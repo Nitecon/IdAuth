@@ -35,7 +35,12 @@ class User implements IdentityInterface
     protected $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="IdAuth\Provider\Doctrine\Entity\Roles", mappedBy="user")
+     * @var \Doctrine\Common\Collections\Collection
+     * @ORM\ManyToMany(targetEntity="IdAuth\Provider\Doctrine\Entity\Roles")
+     * @ORM\JoinTable(name="UserRoleLinker",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
+     * )
      */
     protected $roles;
 
@@ -71,7 +76,7 @@ class User implements IdentityInterface
 
     public function getRoles()
     {
-        return $this->roles;
+        return $this->roles->getValues();
     }
 
     public function getPassword()
@@ -104,9 +109,9 @@ class User implements IdentityInterface
         $this->email = $email;
     }
 
-    public function setRoles($roles)
+    public function setRoles($role)
     {
-        $this->roles = $roles;
+        $this->roles[] = $role;
     }
 
     public function setPassword($password)

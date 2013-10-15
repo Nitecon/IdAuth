@@ -35,9 +35,6 @@ class LoadUserData extends AbstractFixture implements DependentFixtureInterface
         $adminUser->setPassword($bcrypt->create('Tru5tme'));
         $manager->persist($adminUser);
         $manager->flush();
-
-        // store reference to admin role for User relation to Role
-        $this->addReference('admin-user', $adminUser);
     }
 
     public function getDependencies()

@@ -14,59 +14,94 @@
 namespace IdAuth\Provider\Doctrine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /** @ORM\Entity */
 class Roles
 {
 
     /**
+     * @var int
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
-    /** @ORM\Column(type="string", length=255) */
-    protected $role;
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
+     */
+    protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="IdAuth\Provider\Doctrine\Entity\User", inversedBy="roles")
+     * @var Roles
+     * @ORM\ManyToOne(targetEntity="IdAuth\Provider\Doctrine\Entity\Roles")
      */
-    protected $user;
+    protected $parent;
 
-    public function __construct()
-    {
-        $this->user = new ArrayCollection();
-    }
-
+    /**
+     * Get the id.
+     *
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
 
-    public function getRole()
-    {
-        return $this->role;
-    }
-
-    public function getUser()
-    {
-        return $this->user;
-    }
-
+    /**
+     * Set the id.
+     *
+     * @param int $id
+     *
+     * @return void
+     */
     public function setId($id)
     {
-        $this->id = $id;
+        $this->id = (int) $id;
     }
 
-    public function setRole($role)
+    /**
+     * Get the role id.
+     *
+     * @return string
+     */
+    public function getName()
     {
-        $this->role = $role;
+        return $this->name;
     }
 
-    public function setUser($user)
+    /**
+     * Set the role id.
+     *
+     * @param string $name
+     *
+     * @return void
+     */
+    public function setName($name)
     {
-        $this->user = $user;
+        $this->name = (string) $name;
+    }
+
+    /**
+     * Get the parent role
+     *
+     * @return Role
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Set the parent role.
+     *
+     * @param Roles $role
+     *
+     * @return void
+     */
+    public function setParent(Roles $parent)
+    {
+        $this->parent = $parent;
     }
 }

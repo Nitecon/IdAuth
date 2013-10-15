@@ -23,11 +23,20 @@ class LoadUserRoleData extends AbstractFixture
     public function load(ObjectManager $manager)
     {
         $adminRole = new Roles();
-        $adminRole->setRole('Administrator');
+        $adminRole->setName('Administrator');
+        $superUser = new Roles();
+        $superUser->setName('SuperUser');
+        $superUser->setParent($adminRole);
+        $userRole = new Roles();
+        $userRole->setName('User');
+        $userRole->setParent($superUser);
         $anonRole = new Roles();
-        $anonRole->setRole('Anonymous');
+        $anonRole->setName('Anonymous');
+        $anonRole->setParent($userRole);
 
         $manager->persist($adminRole);
+        $manager->persist($superUser);
+        $manager->persist($userRole);
         $manager->persist($anonRole);
         $manager->flush();
 
