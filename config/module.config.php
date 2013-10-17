@@ -41,8 +41,8 @@ return array(
         'factories' => array(
             'IdAuth\Config' => 'IdAuth\Service\Factory\Config',
             'IdAuth\Collector' => 'IdAuth\Service\Factory\Collector',
-            'IdAuth\Provider\DbTable' => 'IdAuth\Service\Factory\Providers\DbTable',
-            'IdAuth\Provider\Doctrine' => 'IdAuth\Service\Factory\Providers\Doctrine',
+            'IdAuth\Adapter\DbTable' => 'IdAuth\Service\Factory\Adapter\DbTable',
+            'IdAuth\Adapter\Doctrine' => 'IdAuth\Service\Factory\Adapter\Doctrine',
             'IdAuth\Storage' => 'IdAuth\Service\Factory\Storage',
             'IdAuth\Session' => 'IdAuth\Service\Factory\Storage\Session',
             'IdAuthService' => 'IdAuth\Service\Factory\IdAuthService',
@@ -108,12 +108,7 @@ return array(
         'doctype' => 'HTML5',
         'not_found_template' => 'error/404',
         'exception_template' => 'error/index',
-        'template_map' => array(
-            'zend-developer-tools/toolbar/idAuth' => __DIR__ . '/../view/zend-developer-tools/toolbar/idAuth.phtml',
-        ),
-        'template_path_stack' => array(
-            __DIR__ . '/../view',
-        ),
+        'template_map' => include __DIR__ . '/../template_map.php',
     ),
     'zenddevelopertools' => array(
         'profiler' => array(

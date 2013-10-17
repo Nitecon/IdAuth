@@ -88,23 +88,22 @@ class IAServiceProvider
             $provider = $this->serviceManager->get($providerName);
             $result = $provider->authenticate($credentials);
             $messages = array_values($result->getMessages());
-            if ($result->getIsAuthenticated()) {
-                $storage = $this->storage->read();
+            if ($result->isValid()) {
                 $identity = $result->getIdentity();
                 $name = $result->getName();
                 $messages = $result->getMessages();
-                $hasIdentity = $result->getIsAuthenticated();
+                $hasIdentity = $result->isValid();
                 $this->hasIdentity = true;
                 $this->messages = $messages;
 
 
-                $this->storage->write(array(
+                $this->writeStorage(array(
                     'identity' => $identity,
                     'name' => $name,
                     'messages' => $messages,
                     'hasIdentity' => $hasIdentity,
                 ));
-                break;
+                return $this;
             }
         }
         $this->setIdentity(null);
@@ -179,7 +178,6 @@ class IAServiceProvider
     public function processStorage($storage)
     {
         $userStorage = $storage->read();
-
         if (isset($userStorage['identity'])) {
             $this->setIdentity($userStorage['identity']);
             $this->setName($userStorage['name']);

@@ -5,10 +5,10 @@
  *
  * For the full copyright and license information, please view
  * the file LICENSE.txt that was distributed with this source code.
- * 
+ *
  * @author Will Hattingh <w.hattingh@nitecon.com>
  *
- * 
+ *
  */
 
 namespace IdAuth\Collector;
@@ -101,6 +101,11 @@ class IdAuthCollector implements CollectorInterface, Serializable
                 }
                 if (is_string($user)) {
                     $userDetails['identity'] = $user;
+                }
+                if (method_exists($user, "getRoles")) {
+                    if (is_array($user->getRoles()) && count($user->getRoles()) > 0) {
+                        $userDetails['roles'] = $user->getRoles();
+                    }
                 }
             }
         }

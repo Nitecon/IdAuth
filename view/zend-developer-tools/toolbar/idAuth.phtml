@@ -36,6 +36,18 @@ $hasIdentity = $userEntity['user']['hasIdentity'];
                         <span class="zdt-detail-label">Email</span>
                         <span class="zdt-detail-value"><?php echo $userEntity['user']['email']; ?></span>
                     </span>
+                    <?php if (isset($userEntity['user']['roles'])): ?>
+                        <span class="zdt-toolbar-info">
+                            <span class="zdt-detail-label">Roles</span>
+                            <?php for ($i = 0; $i < count($userEntity['user']['roles']); $i++): ?>
+                                <?php if ($i === 0): ?>
+                                    <span class="zdt-detail-value"><?php echo $userEntity['user']['roles'][$i]; ?></span>
+                                <?php else: ?>
+                                    <span class="zdt-detail-extra-value"><?php echo $$userEntity['user']['roles'][$i]; ?></span>
+                                <?php endif; ?>
+                            <?php endfor; ?>
+                        </span>
+                    <?php endif; ?>
                 <?php else: ?>
                     <span class="zdt-detail-label">IPS does not provide extended information</span>
                     <span class="zdt-toolbar-info">

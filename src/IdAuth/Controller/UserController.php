@@ -13,6 +13,12 @@ class UserController extends AbstractActionController
     protected $storage;
     protected $authservice;
     protected $config;
+    protected $debug;
+
+    public function __construct()
+    {
+        $this->debug = new \Zend\Debug\Debug();
+    }
 
     public function indexAction()
     {
@@ -70,21 +76,23 @@ class UserController extends AbstractActionController
         $form = $builder->createForm($user);
         $request = $this->getRequest();
         if ($request->isPost()) {
+
             $form->setData($request->getPost());
+
             if ($form->isValid()) {
                 $user = $request->getPost('username');
                 $pass = $request->getPost('password');
                 $credentials = array('username' => $user, 'password' => $pass,);
+
                 $result = $this->getAuthService()->authenticate($credentials);
-                /* $d = new \Zend\Debug\Debug();
-                  $d->dump($result);
-                  die; */
+
                 foreach ($result->getMessages() as $message) {
                     //save message temporary into flashmessenger
                     $this->flashmessenger()->addMessage($message);
                 }
 
                 if ($result->hasIdentity()) {
+
                     return $this->redirect()->toRoute('idAuth');
                 }
             }

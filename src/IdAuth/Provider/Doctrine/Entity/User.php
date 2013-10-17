@@ -76,7 +76,11 @@ class User implements IdentityInterface
 
     public function getRoles()
     {
-        return $this->roles->getValues();
+        $roles = array();
+        foreach ($this->roles->getValues() as $roleObject) {
+            $roles[] = $roleObject->getName();
+        }
+        return $roles;
     }
 
     public function getPassword()

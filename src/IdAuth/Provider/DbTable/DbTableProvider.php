@@ -45,7 +45,7 @@ class DbTableProvider implements ProviderInterface
         $result = new ProviderResult();
         $result->setAuthCode($authResult->getCode());
         $result->setMessages($authResult->getMessages());
-        $result->setIsAuthenticated($authResult->isValid());
+        $result->setValid($authResult->isValid());
         $result->setName('IdAuth\Providers\DbTable');
         $config = $this->serviceManager->get('Config');
         $options = $config['idAuth']['providerOptions']['DbTable'];

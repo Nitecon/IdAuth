@@ -77,7 +77,7 @@ class ProviderResult
      * 
      * @return bool
      */
-    public function getIsAuthenticated()
+    public function isValid()
     {
         return $this->isAuthenticated;
     }
@@ -125,7 +125,7 @@ class ProviderResult
      * @param bool $isAuthenticated
      * @return void
      */
-    public function setIsAuthenticated($isAuthenticated)
+    public function setValid($isAuthenticated)
     {
         $this->isAuthenticated = $isAuthenticated;
     }

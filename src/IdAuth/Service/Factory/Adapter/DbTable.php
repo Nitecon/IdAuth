@@ -5,15 +5,15 @@
  *
  * For the full copyright and license information, please view
  * the file LICENSE.txt that was distributed with this source code.
- * 
+ *
  * @author Will Hattingh <w.hattingh@nitecon.com>
  *
- * 
+ *
  */
 
-namespace IdAuth\Service\Factory\Providers;
+namespace IdAuth\Service\Factory\Adapter;
 
-use IdAuth\Provider\DbTable\DbTableProvider as Provider;
+use IdAuth\Adapter\DbTable as IAAdapter;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -28,6 +28,6 @@ class DbTable implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new Provider($serviceLocator);
+        return new IAAdapter($serviceLocator);
     }
 }

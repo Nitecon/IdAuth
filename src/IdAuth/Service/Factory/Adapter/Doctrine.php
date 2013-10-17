@@ -11,9 +11,9 @@
  *
  */
 
-namespace IdAuth\Service\Factory\Providers;
+namespace IdAuth\Service\Factory\Adapter;
 
-use IdAuth\Provider\Doctrine\DoctrineProvider as Provider;
+use IdAuth\Adapter\Doctrine as IAAdapter;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -28,6 +28,6 @@ class Doctrine implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new Provider($serviceLocator);
+        return new IAAdapter($serviceLocator);
     }
 }

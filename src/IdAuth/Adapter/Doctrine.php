@@ -11,7 +11,7 @@
  *
  */
 
-namespace IdAuth\Provider\Doctrine;
+namespace IdAuth\Adapter;
 
 use IdAuth\Provider\ProviderResult;
 use IdAuth\Provider\Interfaces\ProviderInterface;
@@ -19,8 +19,9 @@ use IdAuth\Provider\Interfaces\IdentityInterface;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\ORM\EntityManager;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 
-class DoctrineProvider implements ProviderInterface
+class Doctrine implements ProviderInterface
 {
 
     /**
@@ -57,12 +58,13 @@ class DoctrineProvider implements ProviderInterface
         $result = new ProviderResult();
         $username = $credentials['username'];
         $password = $credentials['password'];
-        $repo = $this->getEntityManager()->getRepository($this->entityName);
+        $em = $this->getEntityManager();
+        $repo = $em->getRepository($this->entityName);
         $userObject = $repo->findOneBy(array('username' => $username));
         if (!$userObject) {
             $result->setAuthCode(\Zend\Authentication\Result::FAILURE_IDENTITY_NOT_FOUND);
             $result->setMessages(array('A record with the supplied identity could not be found.'));
-            $result->setIsAuthenticated(false);
+            $result->setValid(false);
             return $result;
         }
         $bcrypt = new Bcrypt();
@@ -71,18 +73,24 @@ class DoctrineProvider implements ProviderInterface
             // Password does not match
             $result->setAuthCode(\Zend\Authentication\Result::FAILURE_CREDENTIAL_INVALID);
             $result->setMessages(array('Supplied credential is invalid.'));
-            $result->setIsAuthenticated(false);
+            $result->setValid(false);
             return $result;
         }
 
         $result->setAuthCode(\Zend\Authentication\Result::SUCCESS);
         $result->setMessages(array('Authentication Successful!'));
-        $result->setIsAuthenticated(true);
+        $result->setValid(true);
+
         $result->setName('IdAuth\Providers\Doctrine');
         $config = $this->serviceManager->get('IdAuth\Config');
         $options = $config['providerOptions']['Doctrine'];
         $result->setOptions($options);
+        $hydrator = new DoctrineObject($em, $this->entityName);
+        $roles = $hydrator->hydrate($userObject->getRoles(), $userObject);
         $result->setIdentity($userObject);
+        /* $d = new \Zend\Debug\Debug();
+          $d->dump($userObject);
+          die; */
         return $result;
     }
 
