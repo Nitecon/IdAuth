@@ -7,8 +7,12 @@ PSR-2 Certified with build pass
 
 WIP
 ===
-The module now functional but needs a lot of work and unit tests.  Please note the 100% coverage indicator
-is currently not accurate as it only has one test file with 100% coverage :)
+The module now functional but needs a lot of work and unit tests.  Getting the module working on your
+own may take quite a lot of work as I haven't had time to add proper documentation on how to configure
+the module yet.  I'm working on completing the documentation once the vision of the module is more or less
+implemented in the code. 
+
+Please note the 100% coverage indicator is currently not accurate as it only has one test file with 100% coverage :)
 
 IdAuth
 =====
