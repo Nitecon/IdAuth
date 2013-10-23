@@ -5,16 +5,17 @@
  *
  * For the full copyright and license information, please view
  * the file LICENSE.txt that was distributed with this source code.
- * 
+ *
  * @author Will Hattingh <w.hattingh@nitecon.com>
  *
- * 
+ *
  */
 
 namespace IdAuth\Service\Factory;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Authentication\Adapter\Http as HttpAdapter;
 use IdAuth\Service\IaServiceProvider;
 
 class IdAuthService implements FactoryInterface

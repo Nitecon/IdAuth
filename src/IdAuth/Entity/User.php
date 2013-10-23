@@ -1,6 +1,6 @@
 <?php
 
-namespace IdAuth\Provider\Doctrine\Entity;
+namespace IdAuth\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,7 +36,7 @@ class User implements IdentityInterface
 
     /**
      * @var \Doctrine\Common\Collections\Collection
-     * @ORM\ManyToMany(targetEntity="IdAuth\Provider\Doctrine\Entity\Roles")
+     * @ORM\ManyToMany(targetEntity="IdAuth\Entity\Roles")
      * @ORM\JoinTable(name="UserRoleLinker",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}

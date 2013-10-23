@@ -11,7 +11,7 @@
  *
  */
 
-namespace IdAuth\Provider\Doctrine\Entity;
+namespace IdAuth\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -35,7 +35,7 @@ class Roles
 
     /**
      * @var Roles
-     * @ORM\ManyToOne(targetEntity="IdAuth\Provider\Doctrine\Entity\Roles")
+     * @ORM\ManyToOne(targetEntity="IdAuth\Entity\Roles")
      */
     protected $parent;
 

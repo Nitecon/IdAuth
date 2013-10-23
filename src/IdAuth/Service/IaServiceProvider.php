@@ -71,7 +71,7 @@ class IAServiceProvider
     {
         $this->serviceManager = $serviceLocator;
         $config = $this->serviceManager->get('IdAuth\Config');
-        $this->availProviders = $config['tryProviders'];
+        $this->availProviders = $config['tryAdapters'];
         $storage = $this->serviceManager->get('IdAuth\Storage');
         $this->storage = $storage;
         if ($this->storage->isEmpty()) {

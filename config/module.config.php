@@ -3,9 +3,7 @@
 return array(
     'idAuth' => array(
         'providerOptions' => array(
-            'DbTable' => array(
-            ),
-            'Doctrine' => array(
+            'IdAuth\Adapter\Doctrine' => array(
             ),
         ),
     ),
@@ -14,11 +12,11 @@ return array(
             'idAuth_entities' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(__DIR__ . '/../src/IdAuth/Provider/Doctrine/Entity')
+                'paths' => array(__DIR__ . '/../src/IdAuth/Entity')
             ),
             'orm_default' => array(
                 'drivers' => array(
-                    'IdAuth\Provider\Doctrine\Entity' => 'idAuth_entities'
+                    'IdAuth\Entity' => 'idAuth_entities'
                 )
             )
         )

@@ -13,15 +13,16 @@
 
 namespace IdAuth\Adapter;
 
-use IdAuth\Provider\ProviderResult;
-use IdAuth\Provider\Interfaces\ProviderInterface;
 use IdAuth\Provider\Interfaces\IdentityInterface;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Authentication\Adapter\AbstractAdapter;
+use Zend\Authentication\Result as AuthResult;
+use Zend\Authentication\Adapter\Exception\RuntimeException as RuntimeAuthException;
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 
-class Doctrine implements ProviderInterface
+class Doctrine extends AbstractAdapter
 {
 
     /**
@@ -53,45 +54,35 @@ class Doctrine implements ProviderInterface
         $this->entityName = $config['entity_class'];
     }
 
-    public function authenticate(array $credentials)
+    /**
+     * Performs an authentication attempt
+     *
+     * @return \Zend\Authentication\Result
+     * @throws \Zend\Authentication\Adapter\Exception\ExceptionInterface If authentication cannot be performed
+     */
+    public function authenticate()
     {
-        $result = new ProviderResult();
-        $username = $credentials['username'];
-        $password = $credentials['password'];
+        $username = $this->getIdentity();
+        $password = $this->getCredential();
         $em = $this->getEntityManager();
         $repo = $em->getRepository($this->entityName);
         $userObject = $repo->findOneBy(array('username' => $username));
+        $authCode = -1;
         if (!$userObject) {
-            $result->setAuthCode(\Zend\Authentication\Result::FAILURE_IDENTITY_NOT_FOUND);
-            $result->setMessages(array('A record with the supplied identity could not be found.'));
-            $result->setValid(false);
-            return $result;
+            $authCode = AuthResult::FAILURE_IDENTITY_NOT_FOUND;
+            $messages = array('A record with the supplied identity could not be found.');
+            return new AuthResult($authCode, $this->getIdentity(), $messages);
         }
         $bcrypt = new Bcrypt();
         $bcrypt->setCost(14);
         if (!$bcrypt->verify($password, $userObject->getPassword())) {
             // Password does not match
-            $result->setAuthCode(\Zend\Authentication\Result::FAILURE_CREDENTIAL_INVALID);
-            $result->setMessages(array('Supplied credential is invalid.'));
-            $result->setValid(false);
-            return $result;
+            $messages = array('Supplied credential is invalid.');
+            return new AuthResult(AuthResult::FAILURE_CREDENTIAL_INVALID, $this->getIdentity(), $messages);
         }
-
-        $result->setAuthCode(\Zend\Authentication\Result::SUCCESS);
-        $result->setMessages(array('Authentication Successful!'));
-        $result->setValid(true);
-
-        $result->setName('IdAuth\Providers\Doctrine');
-        $config = $this->serviceManager->get('IdAuth\Config');
-        $options = $config['providerOptions']['Doctrine'];
-        $result->setOptions($options);
         $hydrator = new DoctrineObject($em, $this->entityName);
-        $roles = $hydrator->hydrate($userObject->getRoles(), $userObject);
-        $result->setIdentity($userObject);
-        /* $d = new \Zend\Debug\Debug();
-          $d->dump($userObject);
-          die; */
-        return $result;
+        $hydrator->hydrate($userObject->getRoles(), $userObject);
+        return new AuthResult(AuthResult::SUCCESS, $userObject, array('Authentication Successful'));
     }
 
     public function updateIdentity(IdentityInterface $identity)
