@@ -24,12 +24,7 @@ class IAServiceProvider extends \Zend\Authentication\AuthenticationService
      * @var array
      */
     protected $availProviders;
-
-    /**
-     *
-     * @var bool
-     */
-    protected $hasIdentity = false;
+    protected $chainResult;
 
     /**
      *  This is the identity to be returned and should implement ZfcRbac\Identity\IdentityInterface
@@ -45,16 +40,10 @@ class IAServiceProvider extends \Zend\Authentication\AuthenticationService
     protected $messages;
 
     /**
-     * This is the name of the actual provider being used
+     * Name of the current authentication provider
      * @var string
      */
-    protected $name = 'Db';
-
-    /**
-     * This is the options for the adapter and should implement IdAuth\Provider\Interfaces\OptionsInterface
-     * @var array
-     */
-    protected $options;
+    protected $name;
 
     /**
      *
@@ -62,145 +51,83 @@ class IAServiceProvider extends \Zend\Authentication\AuthenticationService
      */
     protected $serviceManager;
 
-    /**
-     *
-     * @var StorageInterface
-     */
-    protected $storage;
-
     public function __construct(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceManager = $serviceLocator;
         $config = $this->serviceManager->get('IdAuth\Config');
         $this->availProviders = $config['tryAdapters'];
         $storage = $this->serviceManager->get('IdAuth\Storage');
-        $this->storage = $storage;
-        if ($this->storage->isEmpty()) {
-            $this->hasIdentity = false;
-        } else {
-            $this->processStorage($storage);
-        }
+        $this->setStorage($storage);
     }
 
     public function authenticate(\Zend\Authentication\Adapter\AdapterInterface $adapter = null)
     {
-        $messages = array();
+
         foreach ($this->availProviders as $adapterName) {
             $adapter = $this->serviceManager->get($adapterName);
             $adapter->setIdentity($this->getIdentity());
             $adapter->setCredential($this->getCredential());
             $result = $adapter->authenticate();
-            $messages = array_values($result->getMessages());
+            $d = new \Zend\Debug\Debug();
+            $d->dump(array('result' => $result, 'adapter' => $adapterName, 'identity' => $this->getIdentity()));
+            die;
             if ($result->isValid()) {
-                $identity = $result->getIdentity();
-                $messages = $result->getMessages();
-                $hasIdentity = $result->isValid();
-                $this->hasIdentity = true;
-                $this->messages = $messages;
-
-
-                $this->writeStorage(array(
-                    'identity' => $identity,
-                    'name' => $adapterName,
-                    'messages' => $messages,
-                    'hasIdentity' => $hasIdentity,
-                ));
-                return $this;
+                $this->setChainResult($result);
+                /**
+                 * ZF-7546 - prevent multiple successive calls from storing inconsistent results
+                 * Ensure storage has clean state
+                 */
+                if ($this->hasIdentity()) {
+                    $this->clearIdentity();
+                }
+                $this->getStorage()->write($result);
+                $this->setName($adapter);
+                return $result;
             }
         }
-        $this->setIdentity(null);
-        $this->setName(null);
-        $this->setMessages($messages);
-        $this->hasIdentity = false;
         return $this;
     }
 
-    public function clearIdentity()
+    public function getChainResult()
     {
-        $this->storage->clear();
+        return $this->chainResult;
     }
 
-    /**
-     * getCode() - Get the result code for this authentication attempt
-     *
-     * @return int
-     */
-    public function getCode()
+    public function setChainResult($chainResult)
     {
-        return $this->code;
-    }
-
-    public function getIdentity()
-    {
-        return $this->identity;
-    }
-
-    public function hasIdentity()
-    {
-        return $this->hasIdentity;
-    }
-
-    /**
-     * Returns an array of string reasons why the authentication attempt was unsuccessful
-     *
-     * If authentication was successful, this method returns an empty array.
-     *
-     * @return array
-     */
-    public function getMessages()
-    {
-        return $this->messages;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getOptions()
-    {
-        return $this->options;
+        $this->chainResult = $chainResult;
     }
 
     public function getCredential()
     {
-        return $this->credential;
+        return $this->credential
+
+        ;
     }
 
     public function setCredential($credential)
     {
-        $this->credential = $credential;
+        $this->credential = $credential
+
+        ;
     }
 
     public function setIdentity($identity)
     {
-        $this->identity = $identity;
+        $this->identity = $identity
+
+        ;
     }
 
-    public function setMessages($messages)
+    public function getName()
     {
-        $this->messages = $messages;
+        return $this->name
+
+        ;
     }
 
     public function setName($name)
     {
         $this->name = $name;
-    }
-
-    public function processStorage($storage)
-    {
-        $userStorage = $storage->read();
-        if (isset($userStorage['identity'])) {
-            $this->setIdentity($userStorage['identity']);
-            $this->setName($userStorage['name']);
-            $this->setMessages($userStorage['messages']);
-            $this->hasIdentity = $userStorage['hasIdentity'];
-        }
-    }
-
-    public function writeStorage($contents)
-    {
-        $storage = $this->storage;
-        $storage->write($contents);
     }
 }

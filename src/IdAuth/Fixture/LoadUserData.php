@@ -16,7 +16,7 @@ namespace IdAuth\Fixture;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use IdAuth\Provider\Doctrine\Entity\User;
+use IdAuth\Entity\User;
 use Zend\Crypt\Password\Bcrypt;
 
 class LoadUserData extends AbstractFixture implements DependentFixtureInterface

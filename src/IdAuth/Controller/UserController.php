@@ -82,21 +82,18 @@ class UserController extends AbstractActionController
             if ($form->isValid()) {
                 $user = $request->getPost('username');
                 $pass = $request->getPost('password');
-                $credentials = array('username' => $user, 'password' => $pass,);
                 $authService = $this->getAuthService();
                 $authService->setIdentity($user);
                 $authService->setCredential($pass);
                 $result = $authService->authenticate();
-
+                $d = new \Zend\Debug\Debug();
+                $d->dump($result);
+                die;
                 foreach ($result->getMessages() as $message) {
                     //save message temporary into flashmessenger
                     $this->flashmessenger()->addMessage($message);
                 }
-
-                if ($result->hasIdentity()) {
-
-                    return $this->redirect()->toRoute('idAuth');
-                }
+                return $this->redirect()->toRoute('idAuth');
             }
         }
         return $this->redirect()->toRoute('idAuth/login');

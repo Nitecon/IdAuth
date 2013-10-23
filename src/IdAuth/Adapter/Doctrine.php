@@ -18,7 +18,6 @@ use Zend\Crypt\Password\Bcrypt;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Authentication\Adapter\AbstractAdapter;
 use Zend\Authentication\Result as AuthResult;
-use Zend\Authentication\Adapter\Exception\RuntimeException as RuntimeAuthException;
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 
@@ -45,6 +44,12 @@ class Doctrine extends AbstractAdapter
 
     /**
      *
+     * @var mixed
+     */
+    protected $identity;
+
+    /**
+     *
      * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator
      */
     public function __construct(ServiceLocatorInterface $serviceLocator)
@@ -62,23 +67,22 @@ class Doctrine extends AbstractAdapter
      */
     public function authenticate()
     {
-        $username = $this->getIdentity();
-        $password = $this->getCredential();
         $em = $this->getEntityManager();
         $repo = $em->getRepository($this->entityName);
-        $userObject = $repo->findOneBy(array('username' => $username));
-        $authCode = -1;
+        $identity = $this->getIdentity();
+        $userObject = $repo->findOneBy(array('username' => $identity));
         if (!$userObject) {
             $authCode = AuthResult::FAILURE_IDENTITY_NOT_FOUND;
             $messages = array('A record with the supplied identity could not be found.');
-            return new AuthResult($authCode, $this->getIdentity(), $messages);
+            return new AuthResult($authCode, $identity, $messages);
         }
         $bcrypt = new Bcrypt();
         $bcrypt->setCost(14);
-        if (!$bcrypt->verify($password, $userObject->getPassword())) {
+        if (!$bcrypt->verify($this->getCredential(), $userObject->getPassword())) {
             // Password does not match
             $messages = array('Supplied credential is invalid.');
-            return new AuthResult(AuthResult::FAILURE_CREDENTIAL_INVALID, $this->getIdentity(), $messages);
+            $authCode = AuthResult::FAILURE_CREDENTIAL_INVALID;
+            return new AuthResult($authCode, $identity, $messages);
         }
         $hydrator = new DoctrineObject($em, $this->entityName);
         $hydrator->hydrate($userObject->getRoles(), $userObject);
@@ -133,5 +137,15 @@ class Doctrine extends AbstractAdapter
             $this->setEntityManager($this->serviceManager->get('Doctrine\ORM\EntityManager'));
         }
         return $this->entityManager;
+    }
+
+    public function getIdentity()
+    {
+        return $this->identity;
+    }
+
+    public function setIdentity($identity)
+    {
+        $this->identity = $identity;
     }
 }

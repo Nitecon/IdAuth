@@ -15,7 +15,7 @@ namespace IdAuth\Fixture;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use IdAuth\Provider\Doctrine\Entity\Roles;
+use IdAuth\Entity\Roles;
 
 class LoadUserRoleData extends AbstractFixture
 {
