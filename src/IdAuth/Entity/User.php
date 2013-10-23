@@ -4,7 +4,7 @@ namespace IdAuth\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use IdAuth\Provider\Interfaces\IdentityInterface;
+use IdAuth\Interfaces\Identity as IdentityInterface;
 
 /**
  * @ORM\Entity

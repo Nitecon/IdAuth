@@ -5,15 +5,15 @@
  *
  * For the full copyright and license information, please view
  * the file LICENSE.txt that was distributed with this source code.
- * 
+ *
  * @author Will Hattingh <w.hattingh@nitecon.com>
  *
- * 
+ *
  */
 
-namespace IdAuth\Provider\Interfaces;
+namespace IdAuth\Interfaces;
 
-interface IdentityInterface
+interface Identity
 {
 
     public function getUsername();

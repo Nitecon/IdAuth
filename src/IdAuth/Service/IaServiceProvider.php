@@ -16,7 +16,7 @@ namespace IdAuth\Service;
 use Zend\Authentication\Storage\StorageInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class IAServiceProvider
+class IAServiceProvider extends \Zend\Authentication\AuthenticationService
 {
 
     /**
@@ -29,13 +29,14 @@ class IAServiceProvider
      *
      * @var bool
      */
-    protected $hasIdentity;
+    protected $hasIdentity = false;
 
     /**
-     *  This is the identity to be returned and should implement IdAuth\Provider\Interfaces\IdentityInterface
-     * @var DbIdentity
+     *  This is the identity to be returned and should implement ZfcRbac\Identity\IdentityInterface
+     * @var ZfcRbac\Identity\IdentityInterface
      */
-    protected $identity;
+    protected $identity = null;
+    protected $credential;
 
     /**
      * Array of string messages
@@ -81,16 +82,17 @@ class IAServiceProvider
         }
     }
 
-    public function authenticate(array $credentials)
+    public function authenticate(\Zend\Authentication\Adapter\AdapterInterface $adapter = null)
     {
         $messages = array();
-        foreach ($this->availProviders as $providerName) {
-            $provider = $this->serviceManager->get($providerName);
-            $result = $provider->authenticate($credentials);
+        foreach ($this->availProviders as $adapterName) {
+            $adapter = $this->serviceManager->get($adapterName);
+            $adapter->setIdentity($this->getIdentity());
+            $adapter->setCredential($this->getCredential());
+            $result = $adapter->authenticate();
             $messages = array_values($result->getMessages());
             if ($result->isValid()) {
                 $identity = $result->getIdentity();
-                $name = $result->getName();
                 $messages = $result->getMessages();
                 $hasIdentity = $result->isValid();
                 $this->hasIdentity = true;
@@ -99,7 +101,7 @@ class IAServiceProvider
 
                 $this->writeStorage(array(
                     'identity' => $identity,
-                    'name' => $name,
+                    'name' => $adapterName,
                     'messages' => $messages,
                     'hasIdentity' => $hasIdentity,
                 ));
@@ -158,6 +160,16 @@ class IAServiceProvider
     public function getOptions()
     {
         return $this->options;
+    }
+
+    public function getCredential()
+    {
+        return $this->credential;
+    }
+
+    public function setCredential($credential)
+    {
+        $this->credential = $credential;
     }
 
     public function setIdentity($identity)

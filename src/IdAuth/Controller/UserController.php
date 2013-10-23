@@ -83,8 +83,10 @@ class UserController extends AbstractActionController
                 $user = $request->getPost('username');
                 $pass = $request->getPost('password');
                 $credentials = array('username' => $user, 'password' => $pass,);
-
-                $result = $this->getAuthService()->authenticate($credentials);
+                $authService = $this->getAuthService();
+                $authService->setIdentity($user);
+                $authService->setCredential($pass);
+                $result = $authService->authenticate();
 
                 foreach ($result->getMessages() as $message) {
                     //save message temporary into flashmessenger
