@@ -86,9 +86,9 @@ class UserController extends AbstractActionController
                 $authService->setIdentity($user);
                 $authService->setCredential($pass);
                 $result = $authService->authenticate();
-                $d = new \Zend\Debug\Debug();
-                $d->dump($result);
-                die;
+                /* $d = new \Zend\Debug\Debug();
+                  $d->dump($result);
+                  die; */
                 foreach ($result->getMessages() as $message) {
                     //save message temporary into flashmessenger
                     $this->flashmessenger()->addMessage($message);

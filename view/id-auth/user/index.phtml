@@ -4,7 +4,8 @@ Login Success.
 <a href="<?php echo $this->url('idAuth/logout'); ?>">Logout</a>
 
 <?php
+$auth = $this->idAuth()->getIdentity();
 $d = new \Zend\Debug\Debug();
-$d->dump($this->idAuth()->getRoles());
-$d->dump($this->idAuth());
+$d->dump($auth);
+//$d->dump($auth->getIdentity());
 ?>

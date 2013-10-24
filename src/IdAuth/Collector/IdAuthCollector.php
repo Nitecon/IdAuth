@@ -84,9 +84,10 @@ class IdAuthCollector implements CollectorInterface, Serializable
 
         if ($authService->hasIdentity()) {
             $userDetails['hasIdentity'] = true;
-            $userDetails['currentProvider'] = $authService->getName();
+
             if (method_exists($authService, 'getIdentity')) {
                 $user = $authService->getIdentity();
+                $userDetails['currentProvider'] = $user->getName();
                 if (method_exists($user, 'getFirstName')) {
                     $userDetails['firstName'] = $user->getFirstName();
                     $userDetails['extended'] = true;

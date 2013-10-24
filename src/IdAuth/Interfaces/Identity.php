@@ -25,4 +25,6 @@ interface Identity
     public function getEmail();
 
     public function getRoles();
+
+    public function getName();
 }

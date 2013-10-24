@@ -4,12 +4,13 @@ namespace IdAuth\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use IdAuth\Interfaces\Identity as UserInterface;
 use ZfcRbac\Identity\IdentityInterface;
 
 /**
  * @ORM\Entity
  */
-class User implements IdentityInterface
+class User implements UserInterface, IdentityInterface
 {
 
     /**
@@ -33,6 +34,9 @@ class User implements IdentityInterface
 
     /** @ORM\Column(type="string", length=255) */
     protected $password;
+
+    /** @var string */
+    protected $name;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -72,6 +76,16 @@ class User implements IdentityInterface
     public function getEmail()
     {
         return $this->email;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 
     public function getRoles()

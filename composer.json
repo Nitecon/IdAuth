@@ -17,7 +17,8 @@
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*",
         "doctrine/doctrine-orm-module": "0.7.*",
-        "hounddog/doctrine-data-fixture-module": "0.0.*"
+        "hounddog/doctrine-data-fixture-module": "0.0.*",
+        "zf-commons/zfc-rbac": "dev-master"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "1.4.*",

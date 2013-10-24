@@ -35,12 +35,7 @@ class IdAuth extends AbstractHelper implements ServiceLocatorAwareInterface
     public function __invoke()
     {
         $sm = $this->getServiceLocator()->getServiceLocator();
-        $authService = $sm->get('IdAuthService');
-        if ($authService->hasIdentity()) {
-            return $authService->getIdentity();
-        } else {
-            return false;
-        }
+        return $sm->get('IdAuthService');
     }
 
     /**

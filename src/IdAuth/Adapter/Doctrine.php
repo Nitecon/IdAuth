@@ -84,6 +84,7 @@ class Doctrine extends AbstractAdapter
             $authCode = AuthResult::FAILURE_CREDENTIAL_INVALID;
             return new AuthResult($authCode, $identity, $messages);
         }
+        $userObject->setName('IdAuth\Adapter\Doctrine');
         $hydrator = new DoctrineObject($em, $this->entityName);
         $hydrator->hydrate($userObject->getRoles(), $userObject);
         return new AuthResult(AuthResult::SUCCESS, $userObject, array('Authentication Successful'));
