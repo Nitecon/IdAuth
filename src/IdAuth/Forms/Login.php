@@ -34,5 +34,4 @@ class Login
      * @Annotation\Attributes({"value":"Login","class":"btn btn-block btn-primary btn-default"})
      */
     public $submit;
-
 }
