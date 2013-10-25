@@ -1,7 +1,7 @@
 <?php
 $form = $this->form;
 $form->setAttribute('id', 'loginform');
-$form->setAttribute('action', $this->url('idAuth/auth'));
+$form->setAttribute('action', $this->url('idAuth/auth') . "?redir=" . urlencode($this->redirUrl));
 $form->prepare();
 
 echo $this->form()->openTag($form);

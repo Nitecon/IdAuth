@@ -82,6 +82,7 @@ class UserController extends AbstractActionController
             if ($form->isValid()) {
                 $user = $request->getPost('username');
                 $pass = $request->getPost('password');
+                $redir = urldecode($this->params()->fromQuery('redir'));
                 $authService = $this->getAuthService();
                 $authService->setIdentity($user);
                 $authService->setCredential($pass);
@@ -93,7 +94,12 @@ class UserController extends AbstractActionController
                     //save message temporary into flashmessenger
                     $this->flashmessenger()->addMessage($message);
                 }
-                return $this->redirect()->toRoute('idAuth');
+                $conf = $this->getServiceLocator()->get('IdAuth\Config');
+                if ($conf['settings']['usePrevPageRedir']) {
+                    return $this->redirect()->toUrl($redir);
+                } else {
+                    return $this->redirect()->toRoute('idAuth');
+                }
             }
         }
         return $this->redirect()->toRoute('idAuth/login');
