@@ -1,0 +1,39 @@
+<?php
+$form = $this->form;
+$form->setAttribute('id', 'loginform');
+$form->setAttribute('action', $this->url('idAuth/auth'));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+?>
+<p>Enter username and password to continue.</p>
+<div class="input-group input-sm">
+    <span class="input-group-addon"><i class="icon-user"></i></span>
+    <?php echo $this->formElement($form->get('username')); ?>
+</div>
+<div class="input-group">
+    <span class="input-group-addon"><i class="icon-lock"></i></span>
+    <?php echo $this->formElement($form->get('password')); ?>
+</div>
+<div class="form-actions clearfix">
+    <div class="pull-left">
+        <a href="#registerform" class="flip-link to-register blue">Create new account</a>
+    </div>
+    <div class="pull-right">
+        <a href="#recoverform" class="flip-link to-recover grey">Lost password?</a>
+    </div>
+    <?php echo $this->formElement($form->get('submit')); ?>
+</div>
+<div class="footer-login">
+    <div class="pull-left text">
+        Login with
+    </div>
+    <div class="pull-right btn-social">
+        <a class="btn btn-facebook" href="#"><i class="icon-facebook"></i></a>
+        <a class="btn btn-twitter" href="#"><i class="icon-twitter"></i></a>
+        <a class="btn btn-google-plus" href="#"><i class="icon-google-plus"></i></a>
+    </div>
+</div>
+
+
+<?php echo $this->form()->closeTag($form); ?>

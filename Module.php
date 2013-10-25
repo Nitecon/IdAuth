@@ -21,7 +21,7 @@ class Module
         $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-        /** @var \Zend\EventManager\SharedEventManager $sharedEvents */
+        /* @var \Zend\EventManager\SharedEventManager $sharedEvents */
         $sharedEvents = $eventManager->getSharedManager();
         $sharedEvents->attach('Zend\Mvc\Application', MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'processUnAuth'), 1);
     }
@@ -52,9 +52,30 @@ class Module
     public function processUnAuth(MvcEvent $e)
     {
         //$d = new \Zend\Debug\Debug(); $d->dump($e->getError());
+        $error = $e->getError();
         if ($e->getError() === 'error-route-unauthorized') {
-            echo "Not Authorized";
-            $e->stopPropagation();
+            $sm = $e->getApplication()->getServiceManager();
+            $conf = $sm->get('IdAuth\Config');
+            if ($conf['settings']['useDifferentLayoutForUnAuth']) {
+                $user = new Forms\Login();
+                $builder = new \Zend\Form\Annotation\AnnotationBuilder();
+                $loginForm = $builder->createForm($user);
+                $view = $e->getViewModel();
+                $view->loginForm = $loginForm;
+                $view->setTemplate('idauth/locked');
+                $view->error = $error;
+                $auth = $sm->get('IdAuthService');
+                $hasIdentity = $auth->hasIdentity();
+                if ($hasIdentity) {
+                    $view->gravatarEmail = $auth->getIdentity()->getEmail();
+                } else {
+                    $view->gravatarEmail = null;
+                }
+
+                $view->hasIdentity = $auth->hasIdentity();
+                $view->identity = $auth->getIdentity();
+                $view->route = $e->getRouteMatch()->getMatchedRouteName();
+            }
         }
     }
 }

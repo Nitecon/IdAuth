@@ -16,6 +16,7 @@ class Login
      * @Annotation\Required({"required":"true" })
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Username:"})
+     * @Annotation\Attributes({"class":"form-control"})
      */
     public $username;
 
@@ -24,18 +25,14 @@ class Login
      * @Annotation\Required({"required":"true" })
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Password:"})
+     * @Annotation\Attributes({"class":"form-control"})
      */
     public $password;
 
     /**
-     * @Annotation\Type("Zend\Form\Element\Checkbox")
-     * @Annotation\Options({"label":"Remember Me ?"})
-     */
-    public $rememberme;
-
-    /**
      * @Annotation\Type("Zend\Form\Element\Submit")
-     * @Annotation\Attributes({"value":"Submit"})
+     * @Annotation\Attributes({"value":"Login","class":"btn btn-block btn-primary btn-default"})
      */
     public $submit;
+
 }

@@ -1,0 +1,130 @@
+<?php echo $this->doctype(); ?>
+<html lang="en">
+    <head>
+        <?php echo $this->headTitle($this->translate('Unauthorized Access'))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <meta charset="UTF-8" />
+        <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+        <?php
+        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/images/favicon.ico'))
+                ->prependStylesheet('//s3.amazonaws.com/nitecon-zcms/css/unicorn-login.css')
+                ->prependStylesheet('//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css')
+                ->prependStylesheet('//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css')
+        ?>
+    </head>
+    <body>
+        <div id="container">
+
+            <div class="row">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Unauthorized Access (403)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="pull-left"><?php echo $this->gravatar($gravatarEmail); ?></div>
+                        <div class="pull-right"style="padding-left: 15px">
+
+                            <?php if ($hasIdentity): ?>
+                                <?php if ($error == 'error-route-unauthorized') : ?>
+                                    Identity (with roles <?php echo implode(',', $identity->getRoles()); ?>) is not authorized to access <?php echo $route; ?>.
+                                <?php elseif ($error == 'error-controller-unauthorized') : ?>
+                                    Identity (with roles <?php echo implode(',', $identity->getRoles()); ?>) is not authorized to access <?php echo $controller; ?>
+                                    <?php if ($action) : ?>
+                                        ::<?php echo $action; ?>Action()
+                                    <?php endif; ?>
+                                    .
+                                <?php elseif ($error == 'error-rbac') : ?>
+                                    RBAC error<br/>
+                                    <?php if ($this->message) : ?>
+                                        <?php echo $this->message; ?>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                You must log in first in order to view this restricted section
+                            <?php endif; ?>
+                        </div>
+
+
+                    </div>
+                    <?php if ($hasIdentity): ?>
+                        <div class="panel-footer"><a href="<?php echo $this->url('idAuth/logout'); ?>">Logout</a></div>
+                    <?php endif; ?>
+                </div>
+
+
+            </div>
+
+            <div id="user">
+                <div id="logo">
+                    <img src="img/logo.png" alt="" />
+                </div>
+                <div id="user">
+                    <div class="avatar">
+                        <div class="inner"></div>
+                        <?php echo $this->gravatar($gravatarEmail); ?>
+                    </div>
+                    <div class="text">
+                        <h4>Hello,<span class="user_name"></span></h4>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <?php if ($hasIdentity): ?>
+
+            <?php else: ?>
+                <div id="loginbox">
+                    <?php echo $this->partial('partial/forms/login', array('form' => $loginForm)); ?>
+
+                    <form id="recoverform" action="#">
+                        <p>Enter your e-mail address below and we will send you instructions how to recover a password.</p>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="icon-envelope"></i></span><input class="form-control" type="text" placeholder="E-mail address" />
+                        </div>
+                        <div class="form-actions clearfix">
+                            <div class="pull-left">
+                                <a href="#loginform" class="grey flip-link to-login">Click to login</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="#registerform" class="blue flip-link to-register">Create new account</a>
+                            </div>
+                            <input type="submit" class="btn btn-block btn-inverse" value="Recover" />
+                        </div>
+                    </form>
+                    <form id="registerform" action="#">
+                        <p>Enter information required to register:</p>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="icon-user"></i></span><input class="form-control" type="text" placeholder="Enter Username" />
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="icon-lock"></i></span><input class="form-control" type="password" placeholder="Choose Password" />
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="icon-lock"></i></span><input class="form-control" type="password" placeholder="Confirm password" />
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="icon-envelope"></i></span><input class="form-control" type="text" placeholder="Enter E-mail address" />
+                        </div>
+                        <div class="form-actions clearfix">
+                            <div class="pull-left">
+                                <a href="#loginform" class="grey flip-link to-login">Click to login</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="#recoverform" class="grey flip-link to-recover">Lost password?</a>
+                            </div>
+                            <input type="submit" class="btn btn-block btn-success" value="Register" />
+                        </div>
+                    </form>
+                <?php endif; ?>
+            </div>
+
+        </div>
+        <footer>
+            <?php
+            echo $this->inlineScript()
+                    ->prependFile('//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js')
+                    ->prependFile('https://code.jquery.com/jquery-1.10.1.min.js')
+            ;
+            ?>
+        </footer>
+</html>

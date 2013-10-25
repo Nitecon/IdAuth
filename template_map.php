@@ -5,6 +5,8 @@ return array(
     'error/index'                         => __DIR__ . '/view/error/index.phtml',
     'id-auth/user/index'                  => __DIR__ . '/view/id-auth/user/index.phtml',
     'id-auth/user/login'                  => __DIR__ . '/view/id-auth/user/login.phtml',
+    'idauth/locked'                       => __DIR__ . '/view/idauth/locked.phtml',
     'layout/idauth'                       => __DIR__ . '/view/layout/idauth.phtml',
+    'partial/forms/login'                 => __DIR__ . '/view/partial/forms/login.phtml',
     'zend-developer-tools/toolbar/idAuth' => __DIR__ . '/view/zend-developer-tools/toolbar/idAuth.phtml',
 );

@@ -8,13 +8,11 @@ return array(
             'IdAuth\Adapter\Doctrine',
         ),
         'defaultProvider' => '',
-        'redirectionStrategy' => array(
+        'settings' => array(
             'useDifferentLayoutForAuth' => true,
-            'authLayout' => 'idAuth/layout',
+            'loginLayout' => 'idauth/login',
             'useDifferentLayoutForUnAuth' => true,
-            'unauthLayout' => 'idAuth/layout',
-            'noIdentityRedirUnauth' => 'idAuth/login',
-            'hasIdentityRedirUnauth' => 'idAuth/login',
+            'unauthLayout' => 'idauth/locked',
             'usePrevPageRedir' => true,
         )
     ),
