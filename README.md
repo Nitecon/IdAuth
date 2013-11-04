@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/Nitecon/IdAuth.png?branch=master)](https://travis-ci.org/Nitecon/IdAuth)
-[![Latest Stable Version](https://poser.pugx.org/nitecon/IdAuth/v/stable.png)](https://packagist.org/packages/nitecon/IdAuth)
-[![Coverage Status](https://coveralls.io/repos/Nitecon/IdAuth/badge.png?branch=master)](https://coveralls.io/r/Nitecon/IdAuth?branch=master)
+[![Build Status](https://travis-ci.org/neuweb/IdAuth.png?branch=master)](https://travis-ci.org/neuweb/IdAuth)
+[![Latest Stable Version](https://poser.pugx.org/neuweb/IdAuth/v/stable.png)](https://packagist.org/packages/neuweb/IdAuth)
+[![Coverage Status](https://coveralls.io/repos/neuweb/IdAuth/badge.png?branch=master)](https://coveralls.io/r/neuweb/IdAuth?branch=master)
 
 PSR-2 Certified with build pass
 ===============================
