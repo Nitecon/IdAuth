@@ -1,9 +1,9 @@
 {
-    "name": "nitecon/idauth",
+    "name": "neuweb/idauth",
     "description": "Zend Framework 2 Content Management System Auth Module, can be run independent of zcms",
     "type": "library",
     "keywords": ["zf2", "auth", "authentication", "identity", "identity provider"],
-    "homepage": "https://github.com/Nitecon/IdAuth",
+    "homepage": "https://github.com/neuweb/IdAuth",
     "license": "New BSD License",
     "authors": [
         {
